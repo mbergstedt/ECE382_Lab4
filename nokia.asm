@@ -197,7 +197,7 @@ clearDisplay:
 	call	#setAddress
 
 	mov.w	#0x01, R12			; write a "clear" set of pixels
-	mov.w	#0x00, R13			; to every byt on the display
+	mov.w	#0x00, R13			; to every byte on the display
 
 	mov.w	#0x360, R11			; loop counter
 clearLoop:
@@ -336,6 +336,7 @@ nextDD:
 ;	Name:		drawBlock
 ;	Inputs:		R12 row to draw block
 ;				R13	column to draw block
+;				R14 color of the block
 ;	Outputs:	none
 ;	Purpose:	draw an 8x8 block of black pixels at screeen cordinates	8*row,8*col
 ;				The display screen, for the purposes of this routine, is divided
@@ -348,6 +349,7 @@ drawBlock:
 	push	R5
 	push	R12
 	push	R13
+	push	R14
 
 	rla.w	R13					; the column address needs multiplied
 	rla.w	R13					; by 8in order to convert it into a
@@ -355,13 +357,21 @@ drawBlock:
 	call	#setAddress			; move cursor to upper left corner of block
 
 	mov		#1, R12
+	tst		R14
+	jnz		white
+color:
 	mov		#0xFF, R13
+	jmp		returnToDraw
+white:
+	mov		#0x00, R13
+returnToDraw:
 	mov.w	#0x08, R5			; loop all 8 pixel columns
 loopdB:
 	call	#writeNokiaByte		; draw the pixels
 	dec.w	R5
 	jnz		loopdB
 
+	pop		R14
 	pop		R13
 	pop		R12
 	pop		R5

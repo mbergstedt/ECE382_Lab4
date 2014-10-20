@@ -3,7 +3,7 @@
 extern void init();
 extern void initNokia();
 extern void clearDisplay();
-extern void drawBlock(unsigned char row, unsigned char col);
+extern void drawBlock(unsigned char row, unsigned char col, unsigned char color);
 
 #define		TRUE			1
 #define		FALSE			0
@@ -12,11 +12,14 @@ extern void drawBlock(unsigned char row, unsigned char col);
 #define		AUX_BUTTON		(P2IN & BIT3)
 #define		LEFT_BUTTON		(P2IN & BIT2)
 #define		RIGHT_BUTTON	(P2IN & BIT1)
+#define		BLACK			0
+#define		WHITE			1
+
 
 
 void main() {
 
-	unsigned char	x, y, button_press;
+	unsigned char	x, y, button_press, color;
 
 	// === Initialize system ================================================
 	IFG1=0; /* clear interrupt flag1 */
@@ -28,7 +31,8 @@ void main() {
 	initNokia();
 	clearDisplay();
 	x=4;		y=4;
-	drawBlock(y,x);
+	color=BLACK;
+	drawBlock(y,x,color);
 
 	while(1) {
 
@@ -48,12 +52,16 @@ void main() {
 				while(RIGHT_BUTTON == 0);
 				if (x<=10) x=x+1;
 				button_press = TRUE;
+			} else if (AUX_BUTTON == 0) {
+				while(AUX_BUTTON == 0);
+				if(color == BLACK) color=WHITE;
+				else if(color == WHITE) color=BLACK;
 			}
 
 			if (button_press) {
 				button_press = FALSE;
 				clearDisplay();
-				drawBlock(y,x);
+				drawBlock(y,x,color);
 			}
 		}
 }
