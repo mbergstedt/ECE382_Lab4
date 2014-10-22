@@ -15,12 +15,12 @@ extern void drawBlock(unsigned char row, unsigned char col, unsigned char color)
 #define		RIGHT_BUTTON	(P2IN & BIT1)
 #define		BLACK			0
 #define		WHITE			1
-#define		X_VEL			1
-#define		Y_VEL			1
+#define		X_VEL			8
+#define		Y_VEL			8
 
 void main() {
 
-	unsigned char	x, y, button_press, color, radius;
+	unsigned char	x, y, button_press, color, radius, i;
 	vector2d	location;
 
 	// === Initialize system ================================================
@@ -36,7 +36,7 @@ void main() {
 	color=BLACK;
 	radius=8;
 	drawBlock(y,x,color);
-	ball myBall=drawBall(x,y,X_VEL,Y_VEL,radius);
+	ball myBall=drawBall(8*x,8*y,X_VEL,Y_VEL,radius);
 	location = myBall.location;
 
 	while(1) {
@@ -68,7 +68,8 @@ void main() {
 				clearDisplay();
 				myBall = moveBall(myBall);
 				location = myBall.location;
-				drawBlock(location.yVal,location.xVal,color);
+				drawBlock(location.yVal/8,location.xVal/8,color);
+				for(i=0;i<255;i++);
 //			}
 		}
 }
