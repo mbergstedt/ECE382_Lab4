@@ -1,4 +1,5 @@
 #include <msp430g2553.h>
+#include "pong.h"
 
 extern void init();
 extern void initNokia();
@@ -14,12 +15,13 @@ extern void drawBlock(unsigned char row, unsigned char col, unsigned char color)
 #define		RIGHT_BUTTON	(P2IN & BIT1)
 #define		BLACK			0
 #define		WHITE			1
-
-
+#define		X_VEL			1
+#define		Y_VEL			1
 
 void main() {
 
-	unsigned char	x, y, button_press, color;
+	unsigned char	x, y, button_press, color, radius;
+	vector2d	location;
 
 	// === Initialize system ================================================
 	IFG1=0; /* clear interrupt flag1 */
@@ -32,11 +34,14 @@ void main() {
 	clearDisplay();
 	x=4;		y=4;
 	color=BLACK;
+	radius=8;
 	drawBlock(y,x,color);
+	ball myBall=drawBall(x,y,X_VEL,Y_VEL,radius);
+	location = myBall.location;
 
 	while(1) {
 
-			if (UP_BUTTON == 0) {
+/*			if (UP_BUTTON == 0) {
 				while(UP_BUTTON == 0);
 				if (y>=1) y=y-1;
 				button_press = TRUE;
@@ -56,12 +61,14 @@ void main() {
 				while(AUX_BUTTON == 0);
 				if(color == BLACK) color=WHITE;
 				else if(color == WHITE) color=BLACK;
-			}
+			}*/
 
-			if (button_press) {
-				button_press = FALSE;
+//			if (button_press) {
+//				button_press = FALSE;
 				clearDisplay();
-				drawBlock(y,x,color);
-			}
+				myBall = moveBall(myBall);
+				location = myBall.location;
+				drawBlock(location.yVal,location.xVal,color);
+//			}
 		}
 }
