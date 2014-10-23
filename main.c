@@ -5,6 +5,7 @@ extern void init();
 extern void initNokia();
 extern void clearDisplay(unsigned char color);
 extern void drawBlock(unsigned char row, unsigned char col, unsigned char color);
+extern void drawPaddle(unsigned char row, unsigned char col, unsigned char color);
 
 #define		TRUE			1
 #define		FALSE			0
@@ -20,7 +21,7 @@ extern void drawBlock(unsigned char row, unsigned char col, unsigned char color)
 
 void main() {
 
-	unsigned char	x, y, button_press, color, radius;
+	unsigned char	xBall, yBall, button_press, color, radius, xPaddle, yPaddle;
 	int	i, j;
 	vector2d	location;
 
@@ -33,11 +34,13 @@ void main() {
 	init();
 	initNokia();
 	clearDisplay(BLACK);
-	x=4;		y=4;
+	xBall=4;		yBall=4;
+	xPaddle=0;		yPaddle=0;
 	color=BLACK;
 	radius=8;
-	drawBlock(y,x,color);
-	ball myBall=drawBall(8*x,8*y,X_VEL,Y_VEL,radius);
+	drawBlock(yBall,xBall,color);
+	drawPaddle(yPaddle,xPaddle,color);
+	ball myBall=drawBall(8*xBall,8*yBall,X_VEL,Y_VEL,radius);
 	location = myBall.location;
 
 	while(1) {
@@ -72,16 +75,27 @@ void main() {
 				for(i=0;i<200;i++){
 					for(j=0;j<30;j++){
 						drawBlock(location.yVal/8,location.xVal/8,color);
+						drawPaddle(yPaddle,xPaddle,color);
+						if (UP_BUTTON == 0) {
+							while(UP_BUTTON == 0);
+							if (yPaddle>=1) yPaddle=yPaddle-1;
+						} else if (DOWN_BUTTON == 0) {
+							while(DOWN_BUTTON == 0);
+							if (yPaddle<=6) yPaddle=yPaddle+1;
+						} else if (AUX_BUTTON == 0) {
+							while(AUX_BUTTON == 0);
+							if(color == BLACK) color=WHITE;
+							else if(color == WHITE) color=BLACK;
+						}
+						//check for collisions
+						if(location.yVal==yPaddle)
+						{
+							if(location.xVal!=xPaddle){
+								clearDisplay(BLACK);
+								while(1);
+							}
+						}
 					}
-					if (AUX_BUTTON == 0) {
-						while(AUX_BUTTON == 0);
-						if(color == BLACK) color=WHITE;
-						else if(color == WHITE) color=BLACK;
-					}
-					if(button_press){
-						button_press = FALSE;
-					}
-
 				}
 //			}
 		}
