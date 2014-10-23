@@ -183,7 +183,7 @@ pollSPI:
 
 ;-------------------------------------------------------------------------------
 ;	Name:		clearDisplay
-;	Inputs:		none
+;	Inputs:		R12 color of the ball; inverted color of screen
 ;	Outputs:	none
 ;	Purpose:	Writes 0x360 blank 8-bit columns to the Nokia display
 ;-------------------------------------------------------------------------------
@@ -192,13 +192,21 @@ clearDisplay:
 	push	R12
 	push	R13
 
+	mov.w	R12,   R14			; inputs start with r12
+
 	mov.w	#0x00, R12			; set display address to 0,0
 	mov.w	#0x00, R13
 	call	#setAddress
 
 	mov.w	#0x01, R12			; write a "clear" set of pixels
+	tst		R14
+	jnz		color
+white:
 	mov.w	#0x00, R13			; to every byte on the display
-
+	jmp		returnToClear
+color:
+	mov.w	#0xFF, R13
+returnToClear:
 	mov.w	#0x360, R11			; loop counter
 clearLoop:
 	call	#writeNokiaByte
@@ -358,11 +366,11 @@ drawBlock:
 
 	mov		#1, R12
 	tst		R14
-	jnz		white
-color:
+	jnz		whiteBlock
+coloredBlock:
 	mov		#0xFF, R13
 	jmp		returnToDraw
-white:
+whiteBlock:
 	mov		#0x00, R13
 returnToDraw:
 	mov.w	#0x08, R5			; loop all 8 pixel columns

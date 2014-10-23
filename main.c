@@ -3,7 +3,7 @@
 
 extern void init();
 extern void initNokia();
-extern void clearDisplay();
+extern void clearDisplay(unsigned char color);
 extern void drawBlock(unsigned char row, unsigned char col, unsigned char color);
 
 #define		TRUE			1
@@ -20,7 +20,8 @@ extern void drawBlock(unsigned char row, unsigned char col, unsigned char color)
 
 void main() {
 
-	unsigned char	x, y, button_press, color, radius, i;
+	unsigned char	x, y, button_press, color, radius;
+	int	i, j;
 	vector2d	location;
 
 	// === Initialize system ================================================
@@ -31,7 +32,7 @@ void main() {
 
 	init();
 	initNokia();
-	clearDisplay();
+	clearDisplay(BLACK);
 	x=4;		y=4;
 	color=BLACK;
 	radius=8;
@@ -65,11 +66,23 @@ void main() {
 
 //			if (button_press) {
 //				button_press = FALSE;
-				clearDisplay();
+				clearDisplay(color);
 				myBall = moveBall(myBall);
 				location = myBall.location;
-				drawBlock(location.yVal/8,location.xVal/8,color);
-				for(i=0;i<255;i++);
+				for(i=0;i<200;i++){
+					for(j=0;j<30;j++){
+						drawBlock(location.yVal/8,location.xVal/8,color);
+					}
+					if (AUX_BUTTON == 0) {
+						while(AUX_BUTTON == 0);
+						if(color == BLACK) color=WHITE;
+						else if(color == WHITE) color=BLACK;
+					}
+					if(button_press){
+						button_press = FALSE;
+					}
+
+				}
 //			}
 		}
 }
