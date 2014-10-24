@@ -88,9 +88,9 @@ void main() {
 							else if(color == WHITE) color=BLACK;
 						}
 						//check for collisions
-						if(location.yVal==yPaddle)
+						if(location.xVal==xPaddle)
 						{
-							if(location.xVal!=xPaddle){
+							if(location.yVal/8!=yPaddle){
 								clearDisplay(BLACK);
 								while(1);
 							}
