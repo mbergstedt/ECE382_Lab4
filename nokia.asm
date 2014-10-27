@@ -388,19 +388,17 @@ loopdB:
 
 ;-------------------------------------------------------------------------------
 ;	Name:		drawPaddle
-;	Inputs:		R12 row to draw block
-;				R13	column to draw block
-;				R14 color of the block
+;	Inputs:		R12 row to draw paddle
+;				R13	column to draw paddle
+;				R14 color of the paddle
 ;	Outputs:	none
-;	Purpose:	draw an 8x8 block of black pixels at screeen cordinates	8*row,8*col
+;	Purpose:	draw a paddle of black pixels at screeen cordinates	8*row,8*col
 ;				The display screen, for the purposes of this routine, is divided
 ;				into 8x8 blocks.  Consequently the codinate system, for the purposes
 ;				of this routine, start in the upper left of the screen @ (0,0) and
 ;				end @ (11,7) in the lower right of the display.
-;	Registers:	R5	column counter to draw all 8 pixel columns
 ;-------------------------------------------------------------------------------
 drawPaddle:
-	push	R5
 	push	R12
 	push	R13
 	push	R14
@@ -424,6 +422,5 @@ returnToPaddle:
 	pop		R14
 	pop		R13
 	pop		R12
-	pop		R5
 
 	ret							; return whence you came
