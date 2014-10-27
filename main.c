@@ -1,3 +1,11 @@
+/*
+ *  Author: Matt Bergstedt
+ *  Date: Oct 20, 2014
+ *  Description: Allows an user to play pong on the LCD display.
+ *  Documentation: I used the given programs and my pong programs from
+ *  			Assignment 6.
+ */
+
 #include <msp430g2553.h>
 #include "pong.h"
 
@@ -19,6 +27,9 @@ extern void drawPaddle(unsigned char row, unsigned char col, unsigned char color
 #define		X_VEL			8
 #define		Y_VEL			8
 
+/*
+ * main.c
+ */
 void main() {
 
 	unsigned char	xBall, yBall, button_press, color, radius, xPaddle, yPaddle;
