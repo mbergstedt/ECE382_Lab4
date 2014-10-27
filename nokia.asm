@@ -1,5 +1,6 @@
 ;-------------------------------------------------------------------------------
 ;	Chris Coulston
+;	drawPaddle, changing input to clearDisplay by Matt Bergstedt
 ;	Fall 2014
 ;	MSP430G2553
 ;	Put some pixels on the Nokia 1202 Diaplsy
